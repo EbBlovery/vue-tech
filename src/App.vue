@@ -1,39 +1,58 @@
 <template>
 	<div id="container">
+	    <div class="header">
+	    	<i @click="toA" class="header-btn"></i>
+            <span>热门消息</span>
+	    </div>
+	    <router-view></router-view>
 		<div class="toggle">
-			<router-link to="/a">跳转到A页面</router-link>
-			<button @click="toB">跳转到B页面</button>
+		    <button>跳转到B页面</button>
+			<router-link to="/b">跳转到A页面</router-link>	
 		</div>
 		<router-view></router-view>
+		<div v-for="item in list">
+		  <div class="list" v-for="i in item">
+		         <div v-html="i.title">
+		         	 
+		         </div>
+		         <img v-bind:src="i.images">     	  
+		  </div>
+		</div>
 	</div>
 </template>
+
+<style>
+#container{width:400px;height:500px;position:relative;margin:0px auto;overflow:scroll;}
+.header{width:100%;height:100px;background:blue;position:absolute;top:0px;left:0px;}
+.header-btn{width:20px;height:20px;background-color:red;position:absolute;top:40px;left:20px;}
+.header span{position:absolute;top:40px;left:50px;color:#fff;font-size:15px;font-weight:bold;}
+.toggle{
+	width:100%;background:red;
+}
+#container .list{width:280px;height:120px;border:1px solid #999;margin:10px auto;}
+#container .list img{width:100px;height:100px;margin:10px;}
+
+</style>
+
 
 <script>
 import axios from 'axios';
 export default {
 	name:"app",
 	data(){
-		return {
-			a:1,
-			b:1,
+		return {			
 			list:[]
 		}
 	},
 	mounted(){
-		axios("http://127.0.0.1:9999/api/3/section/1").then((res)=>{
-			console.log(res.data);
+		axios("http://localhost:9999/api/4/news/latest").then((res)=>{
+			this.list=res.data
 		})
 	},
 	methods:{
-		toB(){
-			this.$router.push("b");
+		toA(){
+			this.$router.push("/a")
 		}
 	}
 }
 </script>
-<style>
-.toggle{
-	width: 100%;
-	background: red;
-}
-</style>
